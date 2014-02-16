@@ -1,6 +1,7 @@
 __author__ = 'slartibart'
 
 import forecastio
+import logging
 import smtplib
 
 
@@ -51,6 +52,9 @@ def prob_to_percent(probability):
     """
     return "{0}%".format(int(probability * 100))
 
+
+_logger = logging.getLogger(__name__)
+_logger.debug("Initialized module")
 
 if __name__ == "__main__":
     api_key = "4d6b83422b6dc943be406ffcb44376bc"
