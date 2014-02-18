@@ -1,5 +1,5 @@
 """
-Notifies people of weather
+Send emails from Dr. Rain
 """
 __author__ = 'slartibart'
 
@@ -7,34 +7,48 @@ __author__ = 'slartibart'
 import smtplib
 
 
-_server = smtplib.SMTP('smtp.gmail.com:587')
-_server.ehlo()
-_server.starttls()
+_initialized = False
 _username = 'bring.a.jacket@gmail.com'
-_password = 'DrKnock#rs'
-_server.login(_username, _password)
 
 
-def send_it_will_rain_email(probability, toaddr):
+def _get_server():
     """
-    Send an email warning about the rain
+    Memoize connection to mail server
+    """
+    if not _initialized:
+        # Reduce open connections by sharing a single server object
+        server = smtplib.SMTP('smtp.gmail.com:587')
+        server.ehlo()
+        server.starttls()
+        password = 'DrKnock#rs'
+        server.login(_username, password)
+
+        _initialized = True
+
+    return server
+
+
+def send_it_will_rain_email(probability, to_addr):
+    """
+    Send an email about the rain
     :param probability: string
-    :param toaddr: string
+    :param to_addr: string
     """
-    fromaddr = 'bring.a.jacket@gmail.com'
     msg = "\r\n".join([
-        "From: Dr. Rain <" + fromaddr + ">",
-        "To: " + toaddr,
-        "Subject: Rain in the Forecast! ({0}".format(probability),
+        "From: Dr. Rain <" + _username + ">",
+        "To: " + to_addr,
+        "Subject: Rain in the Forecast! ({0})".format(probability),
         "",
         "Rain probability is {0}. You'd better bring a jacket.".format(probability)
     ])
 
-    _server.sendmail(fromaddr, [toaddr], msg)
+    _get_server().sendmail(_username, [to_addr], msg)
 
 
 def close():
-    _server.quit()
-
-
+    """
+    Close active connection to mail server
+    """
+    if _initialized:
+        _get_server().quit()
 

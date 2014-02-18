@@ -1,47 +1,22 @@
 __author__ = 'slartibart'
 
-import forecastio
+import dr_rain
 import logging
-import smtplib
+import weather_man
 
 
-def send_it_will_rain_email(probability):
+def alert_if_tomorrow_is_rainy(lat, lng):
     """
-    Send me an email warning about the rain
-    @type probability: string
+    Send email if P(rain tomorrow) > threshold
     """
-    fromaddr = 'bring.a.jacket@gmail.com'
-    toaddr = 'vanevery@gmail.com'
-    username = 'bring.a.jacket@gmail.com'
-    password = 'DrKnock#rs'
-    msg = "\r\n".join([
-        "From: Dr. Rain <" + fromaddr + ">",
-        "To: " + toaddr,
-        "Subject: Rain in the Forecast!",
-        "",
-        "Rain probability is {0}. You'd better bring a jacket.".format(probability)
-    ])
-    server = smtplib.SMTP('smtp.gmail.com:587')
-    server.ehlo()
-    server.starttls()
-    server.login(username, password)
-    server.sendmail(fromaddr, [toaddr], msg)
-    server.quit()
+    tomorrow = weather_man.tomorrow(lat, lng)
+    probability = tomorrow.precipProbability
+    threshold = 0.5
 
-
-def alert_if_tomorrow_is_rainy(daily_forecast):
-    """
-    Determines if it will rain tomorrow
-    @type daily_forecast: ForecastioDataBlock
-    """
-
-    tomorrow = daily_forecast.data.pop(1)
-
-    print("Got data for tomorrow")
-
-    if tomorrow.precipProbability > 0.5:
-        print("Probably will rain tomorrow; sending email")
-        send_it_will_rain_email(prob_to_percent(tomorrow.precipProbability))
+    _logger.debug("Tomorrow's probability is {0}.".format(probability))
+    if probability > threshold:
+        _logger.info("Sending email for P(rain) {0} > threshold {1}".format(probability, threshold))
+        dr_rain.send_it_will_rain_email(prob_to_percent(probability), "vanevery@gmail.com")
 
 
 def prob_to_percent(probability):
@@ -53,18 +28,20 @@ def prob_to_percent(probability):
     return "{0}%".format(int(probability * 100))
 
 
-_logger = logging.getLogger(__name__)
-_logger.debug("Initialized module")
-
 if __name__ == "__main__":
-    api_key = "4d6b83422b6dc943be406ffcb44376bc"
+    logging.basicConfig(level=logging.DEBUG)
+    _logger = logging.getLogger(__name__)
 
     lat = 37.4828
     lng = -122.2361
-    # https://api.forecast.io/forecast/4d6b83422b6dc943be406ffcb44376bc/37.4828,-122.2361
-    forecast = forecastio.load_forecast(api_key, lat, lng)
 
-    daily = forecast.daily()
-    alert_if_tomorrow_is_rainy(daily)
+    alert_if_tomorrow_is_rainy(lat, lng)
+    dr_rain.close()
 
+    # Plan:
+    # ----
+    # For a given person,
+    # * lat,long
+    # * threshold
+    # ...notification method(s)
 
