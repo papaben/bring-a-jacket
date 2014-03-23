@@ -1,6 +1,7 @@
 """
 Send emails from Dr. Rain
 """
+import logging
 from mail_server import MailServer
 from dr_rain_configs import DrRainConfigs
 
@@ -11,6 +12,7 @@ _memorandum = {
     '_server': None,
 }
 
+_logger = logging.getLogger(__name__)
 
 def it_gunna_rain(probability, to_addr):
     """
@@ -21,6 +23,7 @@ def it_gunna_rain(probability, to_addr):
     subject = "Rain in the Forecast! ({0})".format(probability),
     body = "Rain probability is {0}. You'd better bring a jacket.".format(probability)
 
+    _logger.debug("Sending email to {0}".format(to_addr))
     _get_server().send(to_addr, subject, body)
 
 
@@ -29,6 +32,7 @@ def close():
     Close active connection to mail server
     """
     if _memorandum['_initialized']:
+        _logger.info("Closing connection to mail server")
         _get_server().quit()
 
 
@@ -38,6 +42,7 @@ def _get_server():
     """
     if not _memorandum['_initialized']:
         configs = DrRainConfigs()
+        _logger.info("Initializing connection to mail server")
         # Reduce open connections by sharing a single server object
         server = MailServer(configs.mail_username(), configs.mail_password())
 
