@@ -1,11 +1,11 @@
 """
 Checks the weather for you
 """
-__author__ = 'slartibart'
-
 import forecastio
+from weather_configs import WeatherConfigs
 
-_api_key = "4d6b83422b6dc943be406ffcb44376bc"
+_configs = WeatherConfigs()
+_api_key = _configs.api_key()
 
 
 def tomorrow(lat, lng):

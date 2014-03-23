@@ -2,9 +2,8 @@
 Send emails from Dr. Rain
 """
 from mail_server import MailServer
+from mail_configs import MailConfigs
 
-
-_username = 'bring.a.jacket@gmail.com'
 
 # A little gunny sack to memoize the mail server
 _memorandum = {
@@ -13,7 +12,7 @@ _memorandum = {
 }
 
 
-def send_it_will_rain_email(probability, to_addr):
+def it_gunna_rain(probability, to_addr):
     """
     Send an email about the rain
     :param probability: string
@@ -38,8 +37,9 @@ def _get_server():
     :returns MailServer
     """
     if not _memorandum['_initialized']:
+        configs = MailConfigs()
         # Reduce open connections by sharing a single server object
-        server = MailServer(_username, 'DrKnock#rs')
+        server = MailServer(configs.username(), configs.password())
 
         _memorandum['_server'] = server
         _memorandum['_initialized'] = True
