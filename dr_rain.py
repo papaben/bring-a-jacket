@@ -14,13 +14,14 @@ _memorandum = {
 
 _logger = logging.getLogger(__name__)
 
+
 def it_gunna_rain(probability, to_addr):
     """
     Send an email about the rain
     :param probability: string
     :param to_addr: string
     """
-    subject = "Rain in the Forecast! ({0})".format(probability),
+    subject = "Rain in the Forecast! ({0})".format(probability)
     body = "Rain probability is {0}. You'd better bring a jacket.".format(probability)
 
     _logger.debug("Sending email to {0}".format(to_addr))

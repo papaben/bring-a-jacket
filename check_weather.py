@@ -19,6 +19,8 @@ def alert_if_tomorrow_is_rainy(lat, lng):
     if probability > threshold:
         _logger.info("Sending email for P(rain) {0} > threshold {1}".format(probability, threshold))
         dr_rain.it_gunna_rain(prob_to_percent(probability), "vanevery@gmail.com")
+    else:
+        _logger.debug("Email NOT sent. P {0} <= threshold {1}".format(probability, threshold))
 
 
 def prob_to_percent(probability):
