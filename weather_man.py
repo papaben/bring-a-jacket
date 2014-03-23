@@ -15,6 +15,7 @@ def tomorrow(lat, lng):
     :param lng:
     :return:
     """
+    # TODO memoize by lat and lng?
     forecast = forecastio.load_forecast(_api_key, lat, lng)
 
     daily_forecasts = forecast.daily()

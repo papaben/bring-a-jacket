@@ -1,4 +1,6 @@
-__author__ = 'slartibart'
+"""
+The main script that kicks things off
+"""
 
 import dr_rain
 import logging
