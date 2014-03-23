@@ -3,8 +3,10 @@
 # The simplest deploy script ever
 ##
 
-# So I can see what command failed
+# Don't keep deploying if poop hits the fan
 set -e
+# So I can see what command failed
+set -x
 
 cd /usr/local/lib/dr-rain || exit 1
 
