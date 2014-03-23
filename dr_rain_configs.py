@@ -1,4 +1,5 @@
 import ConfigParser
+import os
 
 
 class DrRainConfigs(object):
@@ -7,8 +8,9 @@ class DrRainConfigs(object):
     """
 
     def __init__(self):
+        app_root = os.path.dirname(os.path.abspath(__file__))
         self.config = ConfigParser.RawConfigParser()
-        self.config.read('dr_rain.ini')
+        self.config.read(app_root + '/dr_rain.ini')
 
     @staticmethod
     def print_readme():
