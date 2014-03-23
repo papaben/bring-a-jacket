@@ -2,7 +2,7 @@
 Send emails from Dr. Rain
 """
 from mail_server import MailServer
-from mail_configs import MailConfigs
+from dr_rain_configs import DrRainConfigs
 
 
 # A little gunny sack to memoize the mail server
@@ -37,9 +37,9 @@ def _get_server():
     :returns MailServer
     """
     if not _memorandum['_initialized']:
-        configs = MailConfigs()
+        configs = DrRainConfigs()
         # Reduce open connections by sharing a single server object
-        server = MailServer(configs.username(), configs.password())
+        server = MailServer(configs.mail_username(), configs.mail_password())
 
         _memorandum['_server'] = server
         _memorandum['_initialized'] = True

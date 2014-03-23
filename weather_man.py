@@ -2,10 +2,11 @@
 Checks the weather for you
 """
 import forecastio
-from weather_configs import WeatherConfigs
+from dr_rain_configs import DrRainConfigs
 
-_configs = WeatherConfigs()
-_api_key = _configs.api_key()
+_configs = DrRainConfigs()
+
+_api_key = _configs.weather_api_key()
 
 
 def tomorrow(lat, lng):
