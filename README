@@ -1,0 +1,7 @@
+Dr. Rain is a application that checks tomorrow's weather and emails people
+if the probability of rain in their area is higher than a given threshhold.
+
+To run the script, see `check_weather.py`
+
+The app relies on a configuration file outlined in `dr_rain_configs.py`. The
+configuration file should be located in the root directory at dr_rain.ini

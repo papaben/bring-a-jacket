@@ -47,3 +47,5 @@ def _get_server():
     return _memorandum['_server']
 
 
+if __name__ == "__main__":
+    print "Please see README"
